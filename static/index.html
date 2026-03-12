@@ -270,7 +270,9 @@
       font-size: 11px; border: 1px solid;
     }
     .entity-chip .type-label {
-      font-size: 9px; color: rgba(255,255,255,.3); letter-spacing: .5px;
+      font-size: 9px; letter-spacing: .8px; font-weight: 700;
+      padding: 1px 6px; border-radius: 3px;
+      background: rgba(0,0,0,0.06); color: inherit; opacity: .7;
     }
 
     /* ── LEGEND PANEL ── */
@@ -301,6 +303,11 @@
     .legend-def {
       font-family: var(--serif); font-size: 12px; font-weight: 300;
       color: #3a4a6a; line-height: 1.65; margin-bottom: 8px;
+    }
+    .legend-note {
+      font-size: 10px; color: #7c6f00; background: #fefce8;
+      border: 1px solid #fde68a; border-radius: 4px;
+      padding: 4px 8px; margin: 0 0 8px 0; line-height: 1.5;
     }
     .legend-examples {
       display: flex; flex-wrap: wrap; gap: 4px;
@@ -494,17 +501,11 @@
     <div class="legend-drawer-header" id="legendDrawerToggle">
       <span style="font-size:15px">📖</span>
       <span class="legend-drawer-title">Chú Thích Phân Loại Thực Thể</span>
-      <span class="legend-drawer-subtitle">— 9 nhóm</span>
+      <span class="legend-drawer-subtitle">— 3 nhóm</span>
       <div class="legend-drawer-badges">
-        <span class="drawer-type-dot" style="background:#0891b2" title="Hoạt Chất"></span>
-        <span class="drawer-type-dot" style="background:#dc2626" title="Bệnh"></span>
-        <span class="drawer-type-dot" style="background:#ea580c" title="Triệu Chứng"></span>
-        <span class="drawer-type-dot" style="background:#7c3aed" title="Bộ Phận Cơ Thể"></span>
-        <span class="drawer-type-dot" style="background:#059669" title="Dạng Bào Chế"></span>
-        <span class="drawer-type-dot" style="background:#2563eb" title="Thiết Bị Y Tế"></span>
-        <span class="drawer-type-dot" style="background:#c2410c" title="Sản Phẩm Chăm Sóc"></span>
-        <span class="drawer-type-dot" style="background:#db2777" title="Thuật Ngữ Y Khoa"></span>
-        <span class="drawer-type-dot" style="background:#65a30d" title="Tình Trạng Bệnh Nhân"></span>
+        <span class="drawer-type-dot" style="background:#2563eb" title="Sản Phẩm"></span>
+        <span class="drawer-type-dot" style="background:#7c3aed" title="Giải Phẫu"></span>
+        <span class="drawer-type-dot" style="background:#dc2626" title="Bệnh Lý"></span>
       </div>
       <span class="legend-chevron" id="legendChevron">▼</span>
     </div>
@@ -523,18 +524,33 @@
 
 
 <script>
-const SAMPLE_TEXT = `Hỗn dịch uống Biviantac Kháng Acid Vị Bạc Hà Reliv là sản phẩm của Công ty TNHH BRV Healthcare (Việt Nam), được bào chế dưới dạng hỗn dịch uống, có hương bạc hà. Sản phẩm này được chỉ định để điều trị các triệu chứng khó tiêu, đầy hơi, trào ngược dạ dày thực quản, ợ nóng, ợ chua và các rối loạn thường gặp trong bệnh lý loét dạ dày tá tràng, thực quản.`;
+const SAMPLE_TEXT = `Máy đo huyết áp bắp tay tự động Panasonic EW3109. Nước muối sinh lý ưu trương xịt mũi dành cho người bị nghẹt mũi, viêm xoang. Dung dịch ngâm bảo quản kính áp tròng. Băng vệ sinh siêu mỏng dành cho phụ nữ sau sinh. Que thử thai dương tính. Khẩu trang y tế kháng khuẩn bảo vệ đường hô hấp.`;
 
 const ENTITY_CONFIG = {
-  ACTIVE_INGREDIENT:  { label:"Hoạt Chất",              icon:"⚗️",  color:"#0891b2", definition:"Hoạt chất hóa học hoặc dược chất có tác dụng điều trị trong thuốc hoặc mỹ phẩm.", examples:["paracetamol","loratadin","amoxicillin","vitamin c"] },
-  DISEASE:            { label:"Bệnh",                    icon:"🦠",  color:"#dc2626", definition:"Tên bệnh hoặc tình trạng bệnh lý được chẩn đoán.", examples:["viêm họng","viêm xoang","viêm dạ dày","viêm gan"] },
-  SYMPTOM:            { label:"Triệu Chứng",             icon:"🌡️", color:"#ea580c", definition:"Triệu chứng hoặc biểu hiện bất thường mà người bệnh cảm nhận được. Có thể là 1 từ hoặc nhiều từ.", examples:["ho","sốt","đau họng","nghẹt mũi","sốt cao","ngứa"] },
-  BODY_PART:          { label:"Bộ Phận Cơ Thể",         icon:"🫀",  color:"#7c3aed", definition:"Tên bộ phận cơ thể người liên quan đến bệnh lý hoặc điều trị.", examples:["xoang mũi","dạ dày","đường hô hấp","da đầu"] },
-  DOSAGE_FORM:        { label:"Dạng Bào Chế",            icon:"💊",  color:"#059669", definition:"Dạng bào chế của thuốc.", examples:["viên nén","viên nang","dung dịch uống","xịt","siro"] },
-  MEDICAL_DEVICE:     { label:"Thiết Bị Y Tế",           icon:"🩺",  color:"#2563eb", definition:"Thiết bị hoặc vật tư y tế dùng trong chăm sóc sức khỏe hoặc chẩn đoán. Không bao gồm tên thương hiệu.", examples:["nhiệt kế điện tử","que thử thai","que test covid","máy đo huyết áp"] },
-  HEALTHCARE_PRODUCT: { label:"Sản Phẩm Chăm Sóc",      icon:"🧴",  color:"#c2410c", definition:"Sản phẩm chăm sóc sức khỏe hoặc dược mỹ phẩm dùng để vệ sinh, bảo vệ hoặc chăm sóc cơ thể nhưng không phải là thuốc.", examples:["sữa rửa mặt","kem chống nắng","băng vệ sinh","bao cao su"] },
-  MEDICAL_TERM:       { label:"Thuật Ngữ Y Khoa",        icon:"📋",  color:"#db2777", definition:"Thuật ngữ chuyên môn trong y khoa không thuộc các nhóm trên.", examples:["đường hô hấp trên","hệ miễn dịch","vi khuẩn gây bệnh","nhiễm trùng hô hấp"] },
-  PATIENT_CONDITION:  { label:"Tình Trạng Bệnh Nhân",   icon:"👤",  color:"#65a30d", definition:"Tình trạng sức khỏe hoặc đặc điểm của bệnh nhân có liên quan đến bệnh lý hoặc điều trị.", examples:["có thai","tiền mãn kinh","mang thai"] },
+  PRODUCT:   {
+    label:      "Sản Phẩm",
+    icon:       "🏥",
+    color:      "#2563eb",
+    definition: "Tên sản phẩm y tế, dược phẩm, chăm sóc cá nhân, thiết bị y tế, dược mỹ phẩm.",
+    examples:   ["băng gạc","nhiệt kế","sữa rửa mặt","băng vệ sinh","bao cao su","que thử","máy đo huyết áp","kính áp tròng","khẩu trang","xịt mũi","gel bôi"],
+    note:       "Không bao gồm tên thương hiệu, hoạt chất ngoại lai."
+  },
+  ANATOMY:   {
+    label:      "Giải Phẫu",
+    icon:       "🫀",
+    color:      "#7c3aed",
+    definition: "Bộ phận giải phẫu và cơ thể người có ý nghĩa lâm sàng.",
+    examples:   ["hô hấp","bắp tay","âm đạo","não","mạch máu","đường huyết","da","niêm mạc"],
+    note:       "Trích xuất trọn khái niệm giải phẫu, không cắt vụn."
+  },
+  PATHOLOGY: {
+    label:      "Bệnh Lý",
+    icon:       "🦠",
+    color:      "#dc2626",
+    definition: "Bệnh lý, triệu chứng, tình trạng sinh lý mang ý nghĩa lâm sàng.",
+    examples:   ["viêm xoang","cảm lạnh","đau đầu","ưu trương","nghẹt mũi","sổ mũi","đột quỵ","rung nhĩ"],
+    note:       "Bao gồm cả triệu chứng 1 từ (nghẹt mũi, sốt) và tình trạng sinh lý (ưu trương)."
+  },
 };
 
 function hex2rgba(hex, a) {
@@ -711,7 +727,7 @@ function renderResults() {
     chip.className = "entity-chip";
     chip.style.background = hex2rgba(cfg.color || "#fff", 0.1);
     chip.style.borderColor = hex2rgba(cfg.color || "#fff", 0.25);
-    chip.innerHTML = `<span style="font-size:12px">${cfg.icon||""}</span><span style="color:${cfg.color};font-weight:600">${e.term}</span><span class="type-label">${e.type}</span>`;
+    chip.innerHTML = `<span style="font-size:12px">${cfg.icon||""}</span><span style="color:${cfg.color};font-weight:600">${e.term}</span><span class="type-label" style="color:${cfg.color};background:${hex2rgba(cfg.color,0.12)}">${e.type}</span>`;
     el.appendChild(chip);
   }
 
@@ -744,6 +760,7 @@ function renderResults() {
         <span class="legend-key">${type}</span>
       </div>
       <p class="legend-def">${cfg.definition}</p>
+      ${cfg.note ? `<p class="legend-note">💡 ${cfg.note}</p>` : ""}
       <div class="legend-examples">${cfg.examples.map(ex=>`<span class="legend-ex">${ex}</span>`).join("")}</div>
     `;
     lp.appendChild(card);
@@ -769,6 +786,7 @@ function renderStaticLegend() {
         <span class="legend-key">${type}</span>
       </div>
       <p class="legend-def">${cfg.definition}</p>
+      ${cfg.note ? `<p class="legend-note">💡 ${cfg.note}</p>` : ""}
       <div class="legend-examples">${cfg.examples.map(ex=>`<span class="legend-ex">${ex}</span>`).join("")}</div>
     `;
     grid.appendChild(card);
