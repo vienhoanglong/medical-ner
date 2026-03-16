@@ -69,17 +69,17 @@ PHẦN 4: VÍ DỤ MẪU
 
 Input:  Kem dưỡng da ban đêm Sắc Ngọc Khang làm mờ nám, tàn nhang. Ngăn ngừa lão hóa.
 Output:
-{"entities": [{"term": "kem dưỡng da", "type": "PRODUCT"}, {"term": "nám", "type": "PATHOLOGY"}, {"term": "tàn nhang", "type": "PATHOLOGY"}, {"term": "da", "type": "ANATOMY"}]}
+[{"term": "kem dưỡng da", "type": "PRODUCT"}, {"term": "nám", "type": "PATHOLOGY"}, {"term": "tàn nhang", "type": "PATHOLOGY"}, {"term": "da", "type": "ANATOMY"}]
 
 ════════════════════════════════════════════════════════
 OUTPUT FORMAT
 ════════════════════════════════════════════════════════
 
 - Toàn bộ "term" viết thường (lowercase).
-- Trả về DUY NHẤT một JSON object: {"entities": [...]}
+- Trả về DUY NHẤT một JSON object: [...]
 - Mỗi phần tử gồm đúng hai key: "term" và "type" (PRODUCT | ANATOMY | PATHOLOGY).
 - KHÔNG giải thích, KHÔNG markdown code fence.
-- Nếu không có entity hợp lệ → {"entities": []}
+- Nếu không có entity hợp lệ → []
 """.strip()
 
 # =============================================================================
